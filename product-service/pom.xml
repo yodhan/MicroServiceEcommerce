@@ -11,8 +11,8 @@
 	<groupId>com.ecommerce.microservice</groupId>
 	<artifactId>product-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ecommapp</name>
-	<description>ecommapp</description>
+	<name>product-service</name>
+	<description>ecommapp product-service</description>
 	<url/>
 	<licenses>
 		<license/>

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:8.0
+        container_name: mysql-cart
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: cartdb
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - ecommerce-network
+
+    redis:
+        image: redis:alpine
+        container_name: redis-cart
+        restart: always
+        ports:
+            - "6379:6379"
+        networks:
+            - ecommerce-network
+
+    cart-service:
+        build:
+            context: ./cart-service
+        container_name: cart-service
+        restart: always
+        ports:
+            - "8083:8083"
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-cart:3306/cartdb
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: root
+            SPRING_REDIS_HOST: redis-cart
+            SPRING_REDIS_PORT: 6379
+            SPRING_APPLICATION_NAME: cart-service
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+        depends_on:
+            - mysql
+            - redis
+        networks:
+            - ecommerce-network
+
+volumes:
+    mysql_data:
+
+networks:
+    ecommerce-network:
+        driver: bridge

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:8.3
+        container_name: mysql-cart-service
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: cartdb
+        ports:
+            - "3307:3307"  # Mapping host:container port (custom)
+        command: --port=3307  # <-- Tells MySQL to run internally on port 3307
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - ecommerce-net
+
+    redis:
+        image: redis:7
+        container_name: redis-cart
+        restart: always
+        ports:
+            - "6379:6379"
+        networks:
+            - ecommerce-net
+
+    cart-service:
+        build:
+            context: ./cart-service
+            dockerfile: Dockerfile
+        container_name: cart-service
+        ports:
+            - "8083:8083"
+        depends_on:
+            - mysql
+            - redis
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-cart-service:3307/cartdb
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            SPRING_REDIS_HOST: redis-cart
+            SPRING_REDIS_PORT: 6379
+        networks:
+            - ecommerce-net
+
+volumes:
+    mysql_data:
+
+networks:
+    ecommerce-net:
+        driver: bridge

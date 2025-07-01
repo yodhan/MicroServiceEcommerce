@@ -1,0 +1,19 @@
+target
+.git
+.idea
+*.iml
+*.log
+*.db
+*.DS_Store
+node_modules
+# Exclude the build output directory
+target/
+
+# Exclude Git history
+.git/
+.gitignore
+
+# Exclude IDE and OS files
+.idea/
+*.iml
+*.log

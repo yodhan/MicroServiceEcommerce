@@ -1,6 +1,15 @@
 package com.ecommerce.microservice.order_service.dto;
 
-import java.math.BigDecimal;
+import lombok.*;
 
-public record OrderRequest(Long id, String orderNumber, String skuCode, BigDecimal price, Integer quantity) {
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class OrderRequest {
+    private String userId;
+    private List<OrderItemDTO> items;
 }

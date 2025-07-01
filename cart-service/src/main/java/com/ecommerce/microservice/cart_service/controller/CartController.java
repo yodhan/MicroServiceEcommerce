@@ -7,31 +7,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/cart")
+@RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
 
-
     @GetMapping("/{userId}")
-    public ResponseEntity<RedisCart> getCart(@PathVariable String userId){
-        RedisCart redisCart=cartService.getCart((userId));
-        return ResponseEntity.ok(redisCart);
+    public ResponseEntity<RedisCart> getCart(@PathVariable String userId) {
+        return ResponseEntity.ok(cartService.getCart(userId));
     }
 
     @PostMapping("/{userId}/add")
-    public  ResponseEntity<String> addToCart(@PathVariable String userId,
-                                             @RequestParam String productId,
-                                             @RequestParam int quantity) {
-        cartService.addToCart(userId,productId,quantity);
-        return ResponseEntity.ok("Product added to cart.");
+    public ResponseEntity<Void> addToCart(@PathVariable String userId,
+                                          @RequestParam String productId,
+                                          @RequestParam int quantity) {
+        cartService.addToCart(userId, productId, quantity);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{userId}/sync")
-    public ResponseEntity<String> syncCart(@PathVariable String userId) {
+    public ResponseEntity<Void> syncToDB(@PathVariable String userId) {
         cartService.syncToDB(userId);
-        return ResponseEntity.ok("Cart synced to database.");
+        return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{userId}/remove")
+    public ResponseEntity<Void> removeItem(@PathVariable String userId,
+                                           @RequestParam String productId) {
+        cartService.removeItem(userId, productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{userId}/clear")
+    public ResponseEntity<Void> clearCart(@PathVariable String userId) {
+        cartService.clearCart(userId);
+        return ResponseEntity.ok().build();
+    }
 }

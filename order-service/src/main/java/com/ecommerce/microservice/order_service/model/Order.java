@@ -1,12 +1,12 @@
 package com.ecommerce.microservice.order_service.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,15 +14,22 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "orders")
+@Builder
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    private String userId;
     private String orderNumber;
-    private String skuCode;
-    private BigDecimal price;
-    private Integer quantity;
+    private String status; // e.g. "PLACED", "CANCELLED", etc.
+    private Double totalAmount;
+    private LocalDateTime orderDate;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OrderItem> items;
 
 
 

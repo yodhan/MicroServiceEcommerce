@@ -1,4 +1,4 @@
-package com.ecommerce.microservice.user_service.config;
+package com.ecommerce.microservice.cart_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,3 +29,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

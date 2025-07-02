@@ -1,4 +1,4 @@
-package com.ecommerce.microservice.user_service.config;
+package com.ecommerce.microservice.order_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
     # -----------------------------
@@ -9,7 +9,7 @@ services:
         container_name: keycloak
         command: start-dev
         ports:
-            - "8080:8080"  # Keycloak UI
+            - "8181:8080"  # Keycloak UI
         environment:
             KEYCLOAK_ADMIN: admin
             KEYCLOAK_ADMIN_PASSWORD: admin
@@ -36,11 +36,11 @@ services:
         container_name: mysql-cart-service
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: cartdb
         ports:
             - "3307:3306"
-        command: --port=3306
+
         volumes:
             - mysql_cart_data:/var/lib/mysql
         networks:
@@ -98,7 +98,7 @@ services:
         container_name: mysql-inventory-service
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: inventory_service
         ports:
             - "3309:3306"
@@ -173,7 +173,7 @@ services:
             - redis
             - eureka-server
         environment:
-            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-cart-service:3306/cartdb
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cartdb
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
             SPRING_REDIS_HOST: redis-cart
@@ -195,7 +195,7 @@ services:
             - mysql-order
             - eureka-server
         environment:
-            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-order-service:3306/order-service
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-order:3306/order-service
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
@@ -215,9 +215,9 @@ services:
             - mysql-inventory
             - eureka-server
         environment:
-            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-inventory-service:3306/inventory_service
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-inventory:3306/inventory_service
             SPRING_DATASOURCE_USERNAME: root
-            SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            SPRING_DATASOURCE_PASSWORD: root
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
         networks:
             - ecommerce-net
@@ -235,7 +235,7 @@ services:
             - mysql-user
             - eureka-server
         environment:
-            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-user-service:3306/userdb
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-user:3306/userdb
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka

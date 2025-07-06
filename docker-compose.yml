@@ -13,6 +13,8 @@ services:
         environment:
             KEYCLOAK_ADMIN: admin
             KEYCLOAK_ADMIN_PASSWORD: admin
+        volumes:
+            - keycloak_data:/opt/keycloak/data
         networks:
             - ecommerce-net
 
@@ -154,6 +156,7 @@ services:
             - mongodb
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb:27017/product-service?authSource=admin
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
         networks:
@@ -173,6 +176,7 @@ services:
             - redis
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cartdb
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
@@ -195,6 +199,7 @@ services:
             - mysql-order
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql-order:3306/order-service
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
@@ -215,6 +220,7 @@ services:
             - mysql-inventory
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql-inventory:3306/inventory_service
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
@@ -235,6 +241,7 @@ services:
             - mysql-user
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql-user:3306/userdb
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
@@ -255,6 +262,7 @@ services:
             - mysql-admin-service
             - eureka-server
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql-admin-service:3306/admin_db
             SPRING_DATASOURCE_USERNAME: root
             SPRING_DATASOURCE_PASSWORD: root
@@ -275,7 +283,7 @@ services:
             - eureka-server
             - keycloak
         environment:
-            SPRING_PROFILES_ACTIVE: default
+            SPRING_PROFILES_ACTIVE: docker
             SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/spring-microservices-realm
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
         networks:
@@ -290,6 +298,7 @@ volumes:
     mysql_inventory_data:
     mysql_user_data:
     mysql_admin_data:
+    keycloak_data:
 
 # -----------------------------
 # Docker Network
